@@ -1,0 +1,18 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<ContentView xmlns="http://xamarin.com/schemas/2014/forms" 
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:d="http://xamarin.com/schemas/2014/forms/design"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             mc:Ignorable="d"
+             x:Name="loadingView"
+             x:Class="IssueHub.Controls.FooterLoadingView">
+    <ContentView.Content>
+        <StackLayout Orientation="Vertical">
+            <BoxView HeightRequest="0.5"
+                     Color="{StaticResource ListViewSeparatorColor}"
+                     HorizontalOptions="FillAndExpand"/>
+            <ActivityIndicator HorizontalOptions="CenterAndExpand"
+                               IsRunning="{Binding Path=IsLoading, Source={x:Reference loadingView}}"/>
+        </StackLayout>
+    </ContentView.Content>
+</ContentView>

@@ -1,0 +1,22 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+			 xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:p="clr-namespace:IssueHub.Properties"
+             xmlns:vm="clr-namespace:IssueHub.ViewModels"
+			 NavigationPage.BackButtonTitle=""
+             x:DataType="vm:NewCommentPageViewModel"
+			 x:Class="IssueHub.Pages.NewCommentPage">
+    <ContentPage.ToolbarItems>
+        <ToolbarItem Text="{x:Static p:Resources.Cancel}"
+					 Command="{Binding Path=CancelCommand}"
+                     Priority="-1"/>
+        <ToolbarItem Text="{x:Static p:Resources.Comment}"
+					 Command="{Binding Path=CommentCommand}"
+                     Priority="1"/>
+    </ContentPage.ToolbarItems>
+
+    <ContentPage.Content>
+        <Editor x:Name="bodyEditor"
+                Text="{Binding Path=Body.Value}"/>
+    </ContentPage.Content>
+</ContentPage>

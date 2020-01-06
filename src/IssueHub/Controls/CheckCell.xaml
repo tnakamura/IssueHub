@@ -1,0 +1,26 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<ViewCell xmlns="http://xamarin.com/schemas/2014/forms" 
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:d="http://xamarin.com/schemas/2014/forms/design"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:cv="clr-namespace:IssueHub.Converters"
+             mc:Ignorable="d"
+             x:Name="checkCell"
+             x:Class="IssueHub.Controls.CheckCell">
+    <ViewCell.View>
+        <StackLayout Orientation="Horizontal"
+                     Padding="15,0,15,0">
+            <Label Text="{Binding Path=Text, Source={x:Reference checkCell}}"
+                   VerticalOptions="Center"
+                   VerticalTextAlignment="Center"
+                   HorizontalOptions="FillAndExpand"
+                   HorizontalTextAlignment="Start"/>
+            <Label Text="{Binding Path=IsChecked, Source={x:Reference checkCell}, Converter={x:Static cv:BooleanGlyphConverter.Default}}"
+                   FontFamily="{StaticResource OcticonsFontFamily}"
+                   TextColor="#0366d6"
+                   HorizontalOptions="End"
+                   VerticalOptions="Center"
+                   VerticalTextAlignment="Center"/>
+        </StackLayout>
+    </ViewCell.View>
+</ViewCell>

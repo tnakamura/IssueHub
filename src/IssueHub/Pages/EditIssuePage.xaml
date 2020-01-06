@@ -1,0 +1,50 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:d="http://xamarin.com/schemas/2014/forms/design"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:p="clr-namespace:IssueHub.Properties"
+             xmlns:vm="clr-namespace:IssueHub.ViewModels"
+             xmlns:ctrl="clr-namespace:IssueHub.Controls"
+             mc:Ignorable="d"
+             Title="{Binding Path=PageTitle}"
+			 NavigationPage.BackButtonTitle=""
+             x:DataType="vm:EditIssuePageViewModel"
+             x:Class="IssueHub.Pages.EditIssuePage">
+
+    <ContentPage.ToolbarItems>
+        <ToolbarItem Text="{x:Static p:Resources.Cancel}"
+                     Command="{Binding Path=CancelCommand}"
+                     Priority="-1"/>
+        <ToolbarItem Text="{x:Static p:Resources.Submit}"
+                     Command="{Binding Path=SubmitCommand}"
+                     Priority="1"/>
+    </ContentPage.ToolbarItems>
+
+    <ContentPage.Content>
+        <TableView Intent="Form"
+                   HasUnevenRows="True">
+            <TableRoot>
+                <TableSection>
+                    <EntryCell Label="{x:Static p:Resources.Title}"
+                               Text="{Binding Path=Title.Value}"/>
+                    <ctrl:LabelCell Text="{x:Static p:Resources.Assignees}"
+                                    Detail="{Binding Path=AssigneesText.Value}"
+                                    Accessory="DisclosureIndicator"
+                                    TextColor="Black"
+                                    Tapped="HandleAssigneeCellTapped"/>
+                    <ctrl:LabelCell Text="{x:Static p:Resources.Labels}"
+                                    Detail="{Binding Path=LabelsText.Value}"
+                                    Accessory="DisclosureIndicator"
+                                    TextColor="Black"
+                                    Tapped="HandleLabelsCellTapped"/>
+                </TableSection>
+
+                <TableSection Title="{x:Static p:Resources.Body}">
+                    <ctrl:MarkdownCell Markdown="{Binding Path=Body.Value}"
+                                       Tapped="HandleIssueBodyCellTapped"/>
+                </TableSection>
+            </TableRoot>
+        </TableView>
+    </ContentPage.Content>
+</ContentPage>

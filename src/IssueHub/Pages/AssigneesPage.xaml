@@ -1,0 +1,37 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:d="http://xamarin.com/schemas/2014/forms/design"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:vm="clr-namespace:IssueHub.ViewModels"
+             xmlns:p="clr-namespace:IssueHub.Properties"
+             xmlns:ctrl="clr-namespace:IssueHub.Controls"
+             mc:Ignorable="d"
+             Title="{x:Static p:Resources.Assignees}"
+			 NavigationPage.BackButtonTitle=""
+             x:DataType="vm:AssigneesPageViewModel"
+             x:Class="IssueHub.Pages.AssigneesPage">
+
+    <ContentPage.Resources>
+        <DataTemplate x:Key="AssigneeTemplate"
+					  x:DataType="vm:AssigneeViewModel">
+            <ctrl:CheckCell Text="{Binding Path=Login}"
+                            IsChecked="{Binding Path=IsSelected}"/>
+        </DataTemplate>
+    </ContentPage.Resources>
+
+    <ContentPage.Content>
+        <ListView x:Name="listView"
+                  ItemTemplate="{StaticResource AssigneeTemplate}"
+                  ItemsSource="{Binding Path=Assignees}"
+                  SeparatorColor="{StaticResource ListViewSeparatorColor}"
+                  IsPullToRefreshEnabled="True"
+                  RefreshCommand="{Binding Path=RefreshCommand}"
+				  ItemSelected="HandleItemSelected"
+                  IsRefreshing="{Binding Path=IsRefreshing.Value}">
+            <ListView.Footer>
+                <ctrl:FooterLoadingView IsLoading="{Binding Path=IsLoading.Value}"/>
+            </ListView.Footer>
+        </ListView>
+    </ContentPage.Content>
+</ContentPage>

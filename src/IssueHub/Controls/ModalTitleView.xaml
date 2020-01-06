@@ -1,0 +1,26 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<ContentView xmlns="http://xamarin.com/schemas/2014/forms" 
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:d="http://xamarin.com/schemas/2014/forms/design"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             mc:Ignorable="d"
+             x:Name="self"
+             x:Class="IssueHub.Controls.ModalTitleView">
+    <ContentView.Content>
+        <StackLayout Orientation="Horizontal">
+            <ImageButton Command="{Binding Path=CloseCommand, Source={x:Reference self}}"                         
+                         VerticalOptions="Center">
+                <ImageButton.Source>
+                    <FontImageSource FontFamily="{DynamicResource OcticonsFontFamily}"
+                                     Glyph="{StaticResource x}"
+                                     Size="24"                                     
+                                     Color="{Binding Path=TextColor, Source={x:Reference self}}"/>
+                </ImageButton.Source>
+            </ImageButton>
+            <Label Text="{Binding Path=Title, Source={x:Reference self}}"
+                   TextColor="{Binding Path=TextColor, Source={x:Reference self}}"
+                   HorizontalOptions="FillAndExpand"
+                   HorizontalTextAlignment="Start"/>
+        </StackLayout>
+    </ContentView.Content>
+</ContentView>

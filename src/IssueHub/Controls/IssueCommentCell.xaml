@@ -1,0 +1,49 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<ViewCell xmlns="http://xamarin.com/schemas/2014/forms" 
+          xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+          xmlns:d="http://xamarin.com/schemas/2014/forms/design"
+          xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+          xmlns:md="clr-namespace:Xam.Forms.Markdown;assembly=Xam.Forms.MarkdownView"
+          xmlns:cv="clr-namespace:IssueHub.Converters"
+          mc:Ignorable="d"
+          x:Name="self"
+          x:Class="IssueHub.Controls.IssueCommentCell">
+    <ViewCell.View>
+        <Grid Padding="20,10,10,10"
+			  BackgroundColor="White">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+            <Image Grid.Row="0"
+                   Grid.Column="0"
+                   Grid.RowSpan="2"
+                   WidthRequest="20"
+                   HeightRequest="20"
+				   VerticalOptions="Start">
+                <Image.Source>
+                    <UriImageSource Uri="{Binding Path=AvatarUrl, Source={x:Reference self}}"/>
+                </Image.Source>
+            </Image>
+            <Label Grid.Row="0"
+                   Grid.Column="1"
+                   TextColor="#444d56"
+                   FontSize="Small">
+                <Label.FormattedText>
+                    <FormattedString>
+                        <Span Text="{Binding Path=Login, Source={x:Reference self}}"/>
+                        <Span Text="{Binding Path=CreatedAt, Source={x:Reference self}, StringFormat=' commented {0}', Converter={x:Static cv:DateTimeOffsetAgoConverter.Default}}"/>
+                    </FormattedString>
+                </Label.FormattedText>
+            </Label>
+            <md:MarkdownView Grid.Row="1"
+                             Grid.Column="1"
+                             Padding="0"
+                             Markdown="{Binding Path=Body, Source={x:Reference self}}"/>
+        </Grid>
+    </ViewCell.View>
+</ViewCell>

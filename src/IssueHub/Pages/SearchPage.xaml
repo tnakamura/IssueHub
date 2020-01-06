@@ -1,0 +1,55 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:d="http://xamarin.com/schemas/2014/forms/design"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:ctrl="clr-namespace:IssueHub.Controls"
+             xmlns:vm="clr-namespace:IssueHub.ViewModels"
+             xmlns:oct="clr-namespace:Octokit;assembly=Octokit"
+             mc:Ignorable="d"
+             NavigationPage.BackButtonTitle=""
+             x:Class="IssueHub.Pages.SearchPage"
+             x:DataType="vm:SearchPageViewModel"
+             Title="Search Issue">
+
+    <ContentPage.Resources>
+        <DataTemplate x:Key="IssueTemplate"
+                      x:DataType="oct:Issue">
+            <ctrl:RepositoryIssueCell Title="{Binding Path=Title}"
+                                      Number="{Binding Path=Number}"
+                                      RepositoryFullName="{Binding Path=Repository.FullName}"
+                                      State="{Binding Path=State}"
+                                      CreatedAt="{Binding Path=CreatedAt}"
+                                      UserLogin="{Binding Path=User.Login}"/>
+        </DataTemplate>
+    </ContentPage.Resources>
+
+    <ContentPage.ToolbarItems>
+        <ToolbarItem Text="Cancel"
+                     Priority="-1"
+                     Command="{Binding Path=CancelCommand}"/>
+    </ContentPage.ToolbarItems>
+
+    <ContentPage.Content>
+        <StackLayout>
+            <SearchBar x:Name="searchBar"
+                       Text="{Binding Path=Keyword.Value}"
+                       SearchCommand="{Binding Path=SearchCommand}"/>
+            <ListView x:Name="listView"
+                      CachingStrategy="RecycleElement"
+                      VerticalOptions="FillAndExpand"
+                      ItemSelected="HandleItemSelected"
+                      SeparatorColor="{StaticResource ListViewSeparatorColor}"
+                      ItemsSource="{Binding Path=Issues}"
+                      ItemTemplate="{StaticResource IssueTemplate}"
+                      RefreshCommand="{Binding Path=RefreshCommand}"
+                      IsPullToRefreshEnabled="True"
+                      IsRefreshing="{Binding Path=IsRefreshing.Value}"
+                      HasUnevenRows="true">
+                <ListView.Footer>
+                    <ctrl:FooterLoadingView IsLoading="{Binding Path=IsLoading.Value}"/>
+                </ListView.Footer>
+            </ListView>
+        </StackLayout>
+    </ContentPage.Content>
+</ContentPage>

@@ -1,0 +1,160 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:d="http://xamarin.com/schemas/2014/forms/design"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:ctrl="clr-namespace:IssueHub.Controls"
+			 xmlns:cv="clr-namespace:IssueHub.Converters"
+             xmlns:utils="clr-namespace:IssueHub.Utils"
+             xmlns:vm="clr-namespace:IssueHub.ViewModels"
+             mc:Ignorable="d"
+			 Title="{Binding Path=PageTitle}"
+			 NavigationPage.BackButtonTitle=""
+             x:DataType="vm:IssueCommentsPageViewModel"
+             x:Class="IssueHub.Pages.IssueCommentsPage">
+
+    <ContentPage.Resources>
+        <DataTemplate x:Key="IssueCommentTemplate"
+					  x:DataType="vm:IssueCommentViewModel">
+            <ctrl:IssueCommentCell Body="{Binding Path=Body}"
+                                   AvatarUrl="{Binding Path=User.AvatarUrl}"
+                                   Login="{Binding Path=User.Login}"
+                                   CreatedAt="{Binding Path=CreatedAt}"/>
+        </DataTemplate>
+
+        <DataTemplate x:Key="IssueBodyTemplate"
+					  x:DataType="vm:IssueBodyViewModel">
+            <ctrl:IssueCommentCell Body="{Binding Path=Body}"
+                                   AvatarUrl="{Binding Path=User.AvatarUrl}"
+                                   Login="{Binding Path=User.Login}"
+                                   CreatedAt="{Binding Path=CreatedAt}"/>
+        </DataTemplate>
+
+        <DataTemplate x:Key="IssueTitleTemplate"
+                      x:DataType="vm:IssueTitleViewModel">
+            <ViewCell>
+                <StackLayout Orientation="Horizontal"
+                             BackgroundColor="White"
+                             Padding="20,5,10,5">
+                    <Image HeightRequest="30">
+                        <Image.Source>
+                            <FontImageSource FontFamily="{DynamicResource OcticonsFontFamily}"
+                                             Glyph="{Binding Path=State, Converter={x:Static cv:ItemStateGlyphConverter.Default}}"
+                                             Color="{Binding Path=State, Converter={x:Static cv:ColorConverter.Default}}"
+                                             Size="20"/>
+                        </Image.Source>
+                    </Image>
+                    <Label Text="{Binding Path=Title}"
+                           HorizontalOptions="FillAndExpand"
+                           VerticalOptions="Center"
+                           TextDecorations="{Binding Path=State, Converter={x:Static cv:TextDecorationsConverter.Default}}"
+                           VerticalTextAlignment="Center"
+                           HorizontalTextAlignment="Start"/>
+                </StackLayout>
+            </ViewCell>
+        </DataTemplate>
+
+        <DataTemplate x:Key="IssueLabelsTemplate"
+                      x:DataType="vm:IssueLabelsViewModel">
+            <ViewCell>
+                <StackLayout Orientation="Horizontal"
+                             BackgroundColor="White"
+                             Padding="20,0,10,0">
+                    <Image HeightRequest="40">
+                        <Image.Source>
+                            <FontImageSource FontFamily="{DynamicResource OcticonsFontFamily}"
+                                             Glyph="{StaticResource tag}"
+                                             Color="#444d56"
+                                             Size="20"/>
+                        </Image.Source>
+                    </Image>
+                    <Label Text="{Binding Path=Labels}"
+                           HorizontalOptions="FillAndExpand"
+                           HorizontalTextAlignment="Start"
+                           VerticalOptions="Center"
+                           VerticalTextAlignment="Center"/>
+                </StackLayout>
+            </ViewCell>
+        </DataTemplate>
+
+        <DataTemplate x:Key="IssueAssigneesTemplate"
+                      x:DataType="vm:IssueAssigneesViewModel">
+            <ViewCell>
+                <StackLayout Orientation="Horizontal"
+                             BackgroundColor="White"
+                             Padding="20,0,10,0">
+                    <Image HeightRequest="40">
+                        <Image.Source>
+                            <FontImageSource FontFamily="{DynamicResource OcticonsFontFamily}"
+                                             Glyph="{StaticResource person}"
+                                             Color="#444d56"
+                                             Size="20"/>
+                        </Image.Source>
+                    </Image>
+                    <Label Text="{Binding Path=Assignees}"
+                           HorizontalOptions="FillAndExpand"
+                           HorizontalTextAlignment="Start"
+                           VerticalOptions="Center"
+                           VerticalTextAlignment="Center"/>
+                </StackLayout>
+            </ViewCell>
+        </DataTemplate>
+
+        <utils:IssueCommentDataTemplateSelector
+			x:Key="IssueCommentDataTemplateSelector"
+			IssueTitleTemplate="{StaticResource IssueTitleTemplate}"
+			IssueBodyTemplate="{StaticResource IssueBodyTemplate}"
+			IssueAssigneesTemplate="{StaticResource IssueAssigneesTemplate}"
+			IssueLabelsTemplate="{StaticResource IssueLabelsTemplate}"
+			IssueCommentTemplate="{StaticResource IssueCommentTemplate}"/>
+    </ContentPage.Resources>
+
+    <ContentPage.Content>
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="100"/>
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="100"/>
+            </Grid.ColumnDefinitions>
+
+            <ListView x:Name="listView"
+                      Grid.Row="0"
+                      Grid.RowSpan="2"
+                      Grid.Column="0"
+                      Grid.ColumnSpan="2"
+                      ItemsSource="{Binding Path=IssueComments}"
+                      ItemTemplate="{StaticResource IssueCommentDataTemplateSelector}"
+                      SeparatorColor="{StaticResource ListViewSeparatorColor}"
+                      HasUnevenRows="True"
+                      RefreshCommand="{Binding Path=RefreshCommand}"
+                      IsPullToRefreshEnabled="True"
+                      IsRefreshing="{Binding Path=IsRefreshing.Value}"
+                      ItemSelected="HandleItemSelected"
+                      SeparatorVisibility="Default">
+                <ListView.Footer>
+                    <ctrl:FooterLoadingView IsLoading="{Binding Path=IsLoading.Value}"/>
+                </ListView.Footer>
+            </ListView>
+
+            <ImageButton Grid.Row="1"
+                         Grid.Column="1"
+                         Padding="10"
+                         CornerRadius="25"
+                         HeightRequest="50"
+                         WidthRequest="50"
+                         HorizontalOptions="Center"
+                         VerticalOptions="Center"
+                         Clicked="HandleAddCommentButtonClicked"
+                         BackgroundColor="#28a745">
+                <ImageButton.Source>
+                    <FontImageSource FontFamily="{DynamicResource OcticonsFontFamily}"
+                                     Glyph="{StaticResource comment}"
+                                     Color="White"/>
+                </ImageButton.Source>
+            </ImageButton>
+        </Grid>
+    </ContentPage.Content>
+</ContentPage>

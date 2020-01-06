@@ -1,0 +1,73 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:d="http://xamarin.com/schemas/2014/forms/design"
+             xmlns:ctrl="clr-namespace:IssueHub.Controls"
+             xmlns:vm="clr-namespace:IssueHub.ViewModels"
+			 xmlns:octokit="clr-namespace:Octokit;assembly=Octokit"
+             mc:Ignorable="d"
+			 Title="{Binding Path=PageTitle}"
+			 NavigationPage.BackButtonTitle=""
+             x:DataType="vm:IssuesPageViewModel"
+			 x:Class="IssueHub.Pages.IssuesPage">
+    <ContentPage.Resources>
+        <DataTemplate x:Key="IssueTemplate"
+                      x:DataType="octokit:Issue">
+            <ctrl:IssueCell Title="{Binding Path=Title}"
+                            Number="{Binding Path=Number}"
+                            State="{Binding Path=State}"
+                            CreatedAt="{Binding Path=CreatedAt}"
+                            UserLogin="{Binding Path=User.Login}"/>
+        </DataTemplate>
+    </ContentPage.Resources>
+
+    <ContentPage.Content>
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="100"/>
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="100"/>
+            </Grid.ColumnDefinitions>
+
+            <ListView x:Name="listView"
+                      Grid.Row="0"
+					  Grid.Column="0"
+					  Grid.ColumnSpan="2"
+					  Grid.RowSpan="2"
+					  CachingStrategy="RecycleElement"
+                      SeparatorColor="{StaticResource ListViewSeparatorColor}"
+                      ItemSelected="HandleItemSelected"
+                      ItemsSource="{Binding Path=Issues}"
+                      ItemTemplate="{StaticResource IssueTemplate}"
+                      RefreshCommand="{Binding Path=RefreshCommand}"
+                      IsPullToRefreshEnabled="True"
+                      IsRefreshing="{Binding Path=IsRefreshing.Value}"
+                      HasUnevenRows="true">
+                <ListView.Footer>
+                    <ctrl:FooterLoadingView IsLoading="{Binding Path=IsLoading.Value}"/>
+                </ListView.Footer>
+            </ListView>
+
+            <ImageButton Grid.Row="1"
+                         Grid.Column="1"
+                         BackgroundColor="#28a745"
+                         Clicked="HandleAddButtonClicked"
+                         VerticalOptions="Center"
+                         HorizontalOptions="Center"
+                         Padding="10"
+                         CornerRadius="25"
+                         HeightRequest="50"
+                         WidthRequest="50">
+                <ImageButton.Source>
+                    <FontImageSource FontFamily="{DynamicResource OcticonsFontFamily}"
+                                     Glyph="{StaticResource plus}"
+                                     Color="White" />
+                </ImageButton.Source>
+            </ImageButton>
+        </Grid>
+    </ContentPage.Content>
+</ContentPage>

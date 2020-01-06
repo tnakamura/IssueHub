@@ -1,0 +1,101 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:d="http://xamarin.com/schemas/2014/forms/design"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:p="clr-namespace:IssueHub.Properties"
+             xmlns:vm="clr-namespace:IssueHub.ViewModels"
+             xmlns:ctrl="clr-namespace:IssueHub.Controls"
+             xmlns:utils="clr-namespace:IssueHub.Utils"
+             mc:Ignorable="d"
+             Title="{x:Static p:Resources.IssueHub}"
+			 NavigationPage.BackButtonTitle=""
+             x:DataType="vm:MainPageViewModel"
+             x:Class="IssueHub.Pages.MainPage">
+
+    <ContentPage.Resources>
+        <DataTemplate x:Key="PublicRepositiryTemplate"
+                      x:DataType="vm:ListItemViewModel">
+            <ImageCell Text="{Binding Path=FullName}"
+                       TextColor="Black">
+                <ImageCell.ImageSource>
+                    <FontImageSource FontFamily="{DynamicResource OcticonsFontFamily}"
+                                     Glyph="{StaticResource repo}"
+                                     Color="#6a737d"
+                                     Size="20"/>
+                </ImageCell.ImageSource>
+            </ImageCell>
+        </DataTemplate>
+
+        <DataTemplate x:Key="PrivateRepositiryTemplate"
+                      x:DataType="vm:ListItemViewModel">
+            <ImageCell Text="{Binding Path=FullName}"
+                       TextColor="Black">
+                <ImageCell.ImageSource>
+                    <FontImageSource FontFamily="{DynamicResource OcticonsFontFamily}"
+                                     Glyph="{StaticResource lock}"
+                                     Color="#dbab09"
+                                     Size="20"/>
+                </ImageCell.ImageSource>
+            </ImageCell>
+        </DataTemplate>
+
+        <DataTemplate x:Key="SmartListTemplate"
+                      x:DataType="vm:SmartListViewModel">
+            <ImageCell Text="{Binding Path=FullName}"
+                       TextColor="Black">
+                <ImageCell.ImageSource>
+                    <FontImageSource FontFamily="{DynamicResource OcticonsFontFamily}"
+                                     Glyph="{Binding Path=Glyph}"
+                                     Color="#24292e"
+                                     Size="20"/>
+                </ImageCell.ImageSource>
+            </ImageCell>
+        </DataTemplate>
+
+        <utils:RepositoryDataTemplateSelector
+            x:Key="RepositoryDataTemplateSelector"
+            PublicTemplate="{StaticResource PublicRepositiryTemplate}"
+            PrivateTemplate="{StaticResource PrivateRepositiryTemplate}"
+            SmartListTemplate="{StaticResource SmartListTemplate}"/>
+    </ContentPage.Resources>
+
+    <ContentPage.ToolbarItems>
+        <ToolbarItem Priority="-1"
+                     Clicked="HandleSettingsClicked">
+            <ToolbarItem.IconImageSource>
+                <FontImageSource FontFamily="{DynamicResource OcticonsFontFamily}"
+                                 Glyph="{DynamicResource settings}"
+                                 Size="20"
+                                 Color="White"/>
+            </ToolbarItem.IconImageSource>
+        </ToolbarItem>
+        <ToolbarItem Priority="1"
+                     Clicked="HandleSearchClicked">
+            <ToolbarItem.IconImageSource>
+                <FontImageSource FontFamily="{DynamicResource OcticonsFontFamily}"
+                                 Glyph="{DynamicResource search}"
+                                 Size="20"
+                                 Color="White"/>
+            </ToolbarItem.IconImageSource>
+        </ToolbarItem>
+    </ContentPage.ToolbarItems>
+
+    <ContentPage.Content>
+        <ListView x:Name="listView"
+                  CachingStrategy="RecycleElement"
+                  SeparatorColor="{StaticResource ListViewSeparatorColor}"
+                  ItemSelected="HandleItemSelected"
+                  ItemsSource="{Binding Path=Sections}"
+                  ItemTemplate="{StaticResource RepositoryDataTemplateSelector}"
+                  IsGroupingEnabled="True"
+                  GroupDisplayBinding="{Binding Path=Title}"
+                  RefreshCommand="{Binding Path=RefreshCommand}"
+                  IsPullToRefreshEnabled="True"
+                  IsRefreshing="{Binding Path=IsRefreshing.Value}">
+            <ListView.Footer>
+                <ctrl:FooterLoadingView IsLoading="{Binding Path=IsLoading.Value}"/>
+            </ListView.Footer>
+        </ListView>
+    </ContentPage.Content>
+</ContentPage>

@@ -1,0 +1,44 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:d="http://xamarin.com/schemas/2014/forms/design"
+             xmlns:ctrl="clr-namespace:IssueHub.Controls"
+             xmlns:vm="clr-namespace:IssueHub.ViewModels"
+			 xmlns:octokit="clr-namespace:Octokit;assembly=Octokit"
+             mc:Ignorable="d"
+			 Title="{Binding Path=PageTitle}"
+			 NavigationPage.BackButtonTitle=""
+             x:DataType="vm:AssignedIssuesPageViewModel"
+             x:Class="IssueHub.Pages.AssignedIssuesPage">
+
+    <ContentPage.Resources>
+        <DataTemplate x:Key="IssueTemplate"
+                      x:DataType="octokit:Issue">
+            <ctrl:RepositoryIssueCell Title="{Binding Path=Title}"
+                                      RepositoryFullName="{Binding Path=Repository.FullName}"
+                                      Number="{Binding Path=Number}"
+                                      UserLogin="{Binding Path=User.Login}"
+                                      State="{Binding Path=State}"
+                                      CreatedAt="{Binding Path=CreatedAt}"/>
+        </DataTemplate>
+    </ContentPage.Resources>
+
+    <ContentPage.Content>
+        <ListView x:Name="listView"
+                  CachingStrategy="RecycleElement"
+                  SeparatorColor="{StaticResource ListViewSeparatorColor}"
+                  ItemSelected="HandleItemSelected"
+                  ItemsSource="{Binding Path=Issues}"
+                  ItemTemplate="{StaticResource IssueTemplate}"
+                  RefreshCommand="{Binding Path=RefreshCommand}"
+                  IsPullToRefreshEnabled="True"
+                  IsRefreshing="{Binding Path=IsRefreshing.Value}"
+                  HasUnevenRows="true">
+            <ListView.Footer>
+                <ctrl:FooterLoadingView IsLoading="{Binding Path=IsLoading.Value}"/>
+            </ListView.Footer>
+        </ListView>
+    </ContentPage.Content>
+
+</ContentPage>

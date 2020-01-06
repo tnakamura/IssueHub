@@ -1,0 +1,57 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<ViewCell xmlns="http://xamarin.com/schemas/2014/forms" 
+          xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+          xmlns:d="http://xamarin.com/schemas/2014/forms/design"
+          xmlns:cv="clr-namespace:IssueHub.Converters"
+          xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+          mc:Ignorable="d"
+          x:Name="self"
+          x:Class="IssueHub.Controls.RepositoryIssueCell">
+    <ViewCell.View>
+        <Grid Padding="20,5,10,5">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+            <Image Grid.Row="0"
+                   Grid.Column="0"
+                   Grid.RowSpan="2">
+                <Image.Source>
+                    <FontImageSource FontFamily="{DynamicResource OcticonsFontFamily}"
+                                     Glyph="{Binding Path=State, Source={x:Reference self}, Converter={x:Static cv:ItemStateGlyphConverter.Default}}"
+                                     Color="{Binding Path=State, Source={x:Reference self}, Converter={x:Static cv:ColorConverter.Default}}"
+                                     Size="20"/>
+                </Image.Source>
+            </Image>
+            <Label Grid.Row="0"
+                   Grid.Column="1"
+                   TextColor="Black"
+                   TextDecorations="{Binding Path=State, Source={x:Reference self}, Converter={x:Static cv:TextDecorationsConverter.Default}}">
+                <Label.FormattedText>
+                    <FormattedString>
+                        <Span Text="{Binding Path=RepositoryFullName, Source={x:Reference self}}"
+                              TextColor="#586069"/>
+                        <Span Text=" "/>
+                        <Span Text="{Binding Path=Title, Source={x:Reference self}}"/>
+                    </FormattedString>
+                </Label.FormattedText>
+            </Label>
+            <Label Grid.Row="1"
+                   Grid.Column="1"
+                   TextColor="#586069"
+                   FontSize="Small">
+                <Label.FormattedText>
+                    <FormattedString>
+                        <Span Text="{Binding Path=Number, Source={x:Reference self}, StringFormat='#{0}'}"/>
+                        <Span Text="{Binding Path=CreatedAt, Source={x:Reference self}, StringFormat=' opened {0}', Converter={x:Static cv:DateTimeOffsetAgoConverter.Default}}"/>
+                        <Span Text="{Binding Path=UserLogin, Source={x:Reference self}, StringFormat=' by {0}'}"/>
+                    </FormattedString>
+                </Label.FormattedText>
+            </Label>
+        </Grid>
+    </ViewCell.View>
+</ViewCell>
