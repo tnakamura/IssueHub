@@ -22,6 +22,7 @@
 
     <ContentPage.Content>
         <ListView x:Name="listView"
+                  CachingStrategy="RecycleElement"
                   ItemTemplate="{StaticResource AssigneeTemplate}"
                   ItemsSource="{Binding Path=Assignees}"
                   SeparatorColor="{StaticResource ListViewSeparatorColor}"

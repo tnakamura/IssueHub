@@ -118,6 +118,17 @@ namespace IssueHub.Pages
                 new SearchPage(Store));
         }
 
+        async void HandleRemoveFavoriteClicked(object sender, EventArgs e)
+        {
+            var menuItem = (MenuItem)sender;
+            var vm = (FavoriteViewModel)menuItem.BindingContext;
+            var repository = vm.ToRepository();
+            await Store.DispatchAsync(
+                FavoriteActions.RemoveFromFavorites(
+                    owner: repository.Owner.Login,
+                    name: repository.Name));
+        }
+
         void ShowLoginPage()
         {
             var authenticator = new OAuth2Authenticator(

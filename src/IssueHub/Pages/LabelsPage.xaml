@@ -5,7 +5,6 @@
              xmlns:d="http://xamarin.com/schemas/2014/forms/design"
              xmlns:p="clr-namespace:IssueHub.Properties"
              xmlns:vm="clr-namespace:IssueHub.ViewModels"
-             xmlns:cv="clr-namespace:IssueHub.Converters"
              xmlns:ctrl="clr-namespace:IssueHub.Controls"
              mc:Ignorable="d"
              Title="{x:Static p:Resources.Labels}"
@@ -22,6 +21,7 @@
 
     <ContentPage.Content>
         <ListView x:Name="listView"
+                  CachingStrategy="RecycleElement"
                   SeparatorColor="{StaticResource ListViewSeparatorColor}"
                   IsRefreshing="{Binding Path=IsRefreshing.Value}"
                   ItemsSource="{Binding Path=Labels}"

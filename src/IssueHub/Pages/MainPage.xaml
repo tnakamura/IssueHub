@@ -14,29 +14,57 @@
              x:Class="IssueHub.Pages.MainPage">
 
     <ContentPage.Resources>
+        <FontImageSource x:Key="PublicRepositoryIcon"
+                         FontFamily="{DynamicResource OcticonsFontFamily}"
+                         Glyph="{StaticResource repo}"
+                         Color="#6a737d"
+                         Size="20"/>
+
+        <FontImageSource x:Key="PrivateRepositoryIcon"
+                         FontFamily="{DynamicResource OcticonsFontFamily}"
+                         Glyph="{StaticResource lock}"
+                         Color="#dbab09"
+                         Size="20"/>
+
         <DataTemplate x:Key="PublicRepositiryTemplate"
                       x:DataType="vm:ListItemViewModel">
             <ImageCell Text="{Binding Path=FullName}"
-                       TextColor="Black">
-                <ImageCell.ImageSource>
-                    <FontImageSource FontFamily="{DynamicResource OcticonsFontFamily}"
-                                     Glyph="{StaticResource repo}"
-                                     Color="#6a737d"
-                                     Size="20"/>
-                </ImageCell.ImageSource>
-            </ImageCell>
+                       ImageSource="{StaticResource PublicRepositoryIcon}"
+                       TextColor="Black"/>
         </DataTemplate>
 
         <DataTemplate x:Key="PrivateRepositiryTemplate"
                       x:DataType="vm:ListItemViewModel">
             <ImageCell Text="{Binding Path=FullName}"
+                       ImageSource="{StaticResource PrivateRepositoryIcon}"
+                       TextColor="Black"/>
+        </DataTemplate>
+
+        <DataTemplate x:Key="PublicFavoriteTemplate"
+                      x:DataType="vm:FavoriteViewModel">
+            <ImageCell Text="{Binding Path=FullName}"
+                       ImageSource="{StaticResource PublicRepositoryIcon}"
                        TextColor="Black">
-                <ImageCell.ImageSource>
-                    <FontImageSource FontFamily="{DynamicResource OcticonsFontFamily}"
-                                     Glyph="{StaticResource lock}"
-                                     Color="#dbab09"
-                                     Size="20"/>
-                </ImageCell.ImageSource>
+                <ImageCell.ContextActions>
+                    <MenuItem Text="{x:Static p:Resources.Remove}"
+                              IsDestructive="True"
+                              Clicked="HandleRemoveFavoriteClicked"
+                              BindingContext="{Binding .}"/>
+                </ImageCell.ContextActions>
+            </ImageCell>
+        </DataTemplate>
+
+        <DataTemplate x:Key="PrivateFavoriteTemplate"
+                      x:DataType="vm:FavoriteViewModel">
+            <ImageCell Text="{Binding Path=FullName}"
+                       ImageSource="{StaticResource PrivateRepositoryIcon}"
+                       TextColor="Black">
+                <ImageCell.ContextActions>
+                    <MenuItem Text="{x:Static p:Resources.Remove}"
+                              IsDestructive="True"
+                              Clicked="HandleRemoveFavoriteClicked"
+                              BindingContext="{Binding .}"/>
+                </ImageCell.ContextActions>
             </ImageCell>
         </DataTemplate>
 
@@ -57,6 +85,8 @@
             x:Key="RepositoryDataTemplateSelector"
             PublicTemplate="{StaticResource PublicRepositiryTemplate}"
             PrivateTemplate="{StaticResource PrivateRepositiryTemplate}"
+            PublicFavoriteTemplate="{StaticResource PublicFavoriteTemplate}"
+            PrivateFavoriteTemplate="{StaticResource PrivateFavoriteTemplate}"
             SmartListTemplate="{StaticResource SmartListTemplate}"/>
     </ContentPage.Resources>
 

@@ -201,6 +201,9 @@
   <data name="Password" xml:space="preserve">
     <value>Password</value>
   </data>
+  <data name="Remove" xml:space="preserve">
+    <value>Remove</value>
+  </data>
   <data name="RemoveFromFavorites" xml:space="preserve">
     <value>Remove From Favorites</value>
   </data>

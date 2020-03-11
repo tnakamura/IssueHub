@@ -9,6 +9,10 @@ namespace IssueHub.Utils
 
         public DataTemplate PrivateTemplate { get; set; }
 
+        public DataTemplate PublicFavoriteTemplate { get; set; }
+
+        public DataTemplate PrivateFavoriteTemplate { get; set; }
+
         public DataTemplate SmartListTemplate { get; set; }
 
         protected override DataTemplate OnSelectTemplate(object item, BindableObject container)
@@ -28,11 +32,11 @@ namespace IssueHub.Utils
             {
                 if (favorite.Private)
                 {
-                    return PrivateTemplate;
+                    return PrivateFavoriteTemplate;
                 }
                 else
                 {
-                    return PublicTemplate;
+                    return PublicFavoriteTemplate;
                 }
             }
             else if (item is SmartListViewModel)
