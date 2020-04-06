@@ -2,6 +2,11 @@
 
 IssueHub is the best way to browse and maintain your GitHub issues on any iPhone, iPod Touch, and Android device!
 
+## Screenshots
+
+<img alt="Lists View" src="https://raw.githubusercontent.com/tnakamura/IssueHub/master/docs/images/screenshot.jpg" width="240">
+
+
 ## Getting the application to build locally
 
 After cloning this repository to your local machine be sure create a file named `secrets.json` in the IssueHub project, and update it to look like the following:
